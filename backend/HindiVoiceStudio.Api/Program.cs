@@ -81,7 +81,7 @@ app.MapPost("/api/tts", async (TtsRequest request, IHttpClientFactory clients, I
     {
         return Results.Problem("Could not decode the audio response from Sarvam.", statusCode: 502);
     }
-});
+}).RequireRateLimiting("tts");
 
 app.Run();
 
