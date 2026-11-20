@@ -1,4 +1,4 @@
-using System.Net.Http.Headers;
+using System.Threading.RateLimiting;
 using System.Text;
 using System.Text.Json;
 
@@ -13,8 +13,20 @@ builder.Services.AddCors(options =>
         else policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddFixedWindowLimiter("tts", limiter =>
+    {
+        limiter.PermitLimit = 30;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
+        limiter.AutoReplenishment = true;
+    });
+});
 var app = builder.Build();
 app.UseCors();
+app.UseRateLimiter();
 
 app.MapGet("/", () => Results.Ok(new { name = "HindiVoiceStudio API", status = "ready", provider = "Sarvam Bulbul v3" }));
 app.MapPost("/api/tts", async (TtsRequest request, IHttpClientFactory clients, IConfiguration config, CancellationToken ct) =>
