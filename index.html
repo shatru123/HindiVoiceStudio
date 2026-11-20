@@ -39,7 +39,7 @@
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const API_BASE = (localStorage.getItem('hvs_api_base') || 'http://localhost:5000').replace(/\/$/,'');
+let API_BASE = (localStorage.getItem('hvs_api_base') || 'http://localhost:5000').replace(/\/$/,'');
 const data={
  'hi-IN':[
   'नमस्ते! आप कैसे हैं? आज मौसम बहुत अच्छा है। चलिए, शाम को चाय पीने के लिए बाहर चलते हैं।',
