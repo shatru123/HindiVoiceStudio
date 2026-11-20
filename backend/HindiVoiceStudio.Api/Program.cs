@@ -29,7 +29,7 @@ app.UseCors();
 app.UseRateLimiter();
 
 app.MapGet("/", () => Results.Ok(new { name = "HindiVoiceStudio API", status = "ready", provider = "Sarvam Bulbul v3" }));
-app.MapPost("/api/tts", async (TtsRequest request, IHttpClientFactory clients, IConfiguration config, CancellationToken ct) =>
+async Task<IResult> HandleTts(TtsRequest request, IHttpClientFactory clients, IConfiguration config, CancellationToken ct)
 {
     var key = config["SARVAM_API_KEY"];
     if (string.IsNullOrWhiteSpace(key))
@@ -81,7 +81,7 @@ app.MapPost("/api/tts", async (TtsRequest request, IHttpClientFactory clients, I
     {
         return Results.Problem("Could not decode the audio response from Sarvam.", statusCode: 502);
     }
-}).RequireRateLimiting("tts");
+app.MapPost("/api/tts", HandleTts).RequireRateLimiting("tts");
 
 app.Run();
 
