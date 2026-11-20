@@ -24,6 +24,7 @@
 <div class="layout">
 <aside class="panel">
 <h3>Test input</h3>
+<div class="field"><label for="apiBase">Backend API URL</label><input id="apiBase" value="http://localhost:5000" placeholder="https://your-api.onrender.com" /><div class="actions"><button class="btn secondary" id="saveApi">Save API URL</button></div></div>
 <div class="field"><label for="language">Language</label><select class="select" id="language"><option value="hi-IN">Hindi · हिन्दी</option><option value="mr-IN">Marathi · मराठी</option></select></div>
 <div class="field"><label>Sample sentences (5 per language)</label><div class="sample-list" id="samples"></div></div>
 <div class="field"><label for="customText">Or enter custom text</label><textarea id="customText" placeholder="Type or paste Hindi / Marathi text here…"></textarea></div>
@@ -61,7 +62,8 @@ const voices={
  'mr-IN':[{id:'ratan',name:'Ratan',gender:'Male',style:'Natural Marathi'},{id:'priya',name:'Priya',gender:'Female',style:'Warm · clear'},{id:'ritu',name:'Ritu',gender:'Female',style:'Expressive · conversational'},{id:'shubh',name:'Shubh',gender:'Male',style:'Compare · alternate'}]
 };
 let selectedSample=0, audioUrls={};
-document.getElementById('apiBase').value=API_BASE;\nconst langEl=document.getElementById('language'), samplesEl=document.getElementById('samples'), textEl=document.getElementById('customText'), grid=document.getElementById('voiceGrid'), statusEl=document.getElementById('status'), toast=document.getElementById('toast');
+document.getElementById('apiBase').value=API_BASE;\ndocument.getElementById('apiBase').value=API_BASE;
+const langEl=document.getElementById('language'), samplesEl=document.getElementById('samples'), textEl=document.getElementById('customText'), grid=document.getElementById('voiceGrid'), statusEl=document.getElementById('status'), toast=document.getElementById('toast');
 function currentText(){return textEl.value.trim()||data[langEl.value][selectedSample]}
 function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',3500)}
 function renderSamples(){samplesEl.innerHTML='';data[langEl.value].forEach((sentence,i)=>{const b=document.createElement('button');b.className='sample'+(i===selectedSample?' active':'');b.innerHTML='<small>Sample '+(i+1)+'</small><span>'+sentence+'</span>';b.onclick=()=>{selectedSample=i;textEl.value='';renderSamples()};samplesEl.appendChild(b)})}
